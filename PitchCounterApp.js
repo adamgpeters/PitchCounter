@@ -1,40 +1,55 @@
-// var InstrumentListener = require('./InstrumentListener.js')
+/**
+ * Summary. Contains the implementation to create a instrument dependent
+ *          pitch counter. Exports a PitchCounterApp object for
+ *          a react file to use.
+ *
+ * @file   This files defines the PitchCounterApp class.
+ * @author Adam Peters.
+ */
 
 class PitchCounterApp {
 
     constructor(instr) {
-        // this.instrument = require('./InstrumentListener.js')
-        // this.instrument.changeInstrument(instr)
-        this.instrument = new InstrumentListener(instr);
-        // this.instrument = this.InstrumentListener.changeInstrument(instr)
-
+        this.instrument = require('./InstrumentListener.js').instrumentListener;
+        this.instrument.changeInstrument(instr);
         this.get_pitch_count = function () {
             return this.instrument.get_pitch_count();
         };
     }
 
-    //Start the EventListener
-    //Note: Cannot start on opening of the WebPage
-    start() {
-        this.instrument.startListener();
-    }
-
+    /**
+     * Change the Instrument to which the app is listening
+     *
+     * @param {instr} the String name of the instrument
+     */
     change_instrument(instr) {
         this.instrument.changeInstrument(instr)
     }
 
-    //completely stop the event EventListener
+    /**
+     * Start the EventListener. Cannot start on opening of WebPage due
+     * to AudioContext limitations.
+     */
+    start() {
+        this.instrument.startListener();
+    }
+
+    /**
+     * Completely stop the app from listening.
+     */
     stop() {
         this.instrument.stopListener();
     }
 
-    //pauses the EventListener and returns the current pitch_counter
-    change_state() {
+    /**
+     * Pause the app from listening.
+     */
+     changeState() {
         return this.instrument.changeListenerState();
     }
 }
 
-const app = new PitchCounterApp("piano");
+export const app = new PitchCounterApp("voice");
 
 function Begin() {
     app.start();
@@ -45,7 +60,5 @@ function Stop() {
 }
 
 function ChangeState() {
-    app.change_state();
+    app.changeState();
 }
-//
-// module.exports = app;
