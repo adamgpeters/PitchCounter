@@ -1,17 +1,35 @@
-// import PitchCounter from './PitchCounter.js'
+const PitchCounter = require('./PitchCounter.js').pitchCounter;
+
+/**
+ * Summary. Listens to an instrument's audio coming from a user's microphone and
+ *          records the number of pitches they play or sing. Contains a
+ *          PitchCounter object and alters instrument dependent fields in
+ *          order to optimize pitch counting of specific instruments.
+ *
+ * @file   This files defines the InstrumentListener class.
+ * @author Adam Peters.
+ */
 
 class InstrumentListener {
     constructor(instrument) {
-        this.pitchCounter = new PitchCounter();
+        this.pitchCounter = PitchCounter;
         this.get_pitch_count = function () {
             return this.pitchCounter.counter; };
         this.changeInstrument(instrument);
     }
 
+    /**
+     * Completely start listening and counting an instrument
+     */
     startListener() {
         this.pitchCounter.initPitchCounting();
     }
 
+    /**
+     * Change the Instrument to which this is listening
+     *
+     * @param {instrument} the String name of the instrument
+     */
     changeInstrument(instrument) {
         if (instrument.toLowerCase() == "piano") this.initPiano();
         else if (instrument.toLowerCase() == "voice") this.initVoice();
@@ -23,22 +41,42 @@ class InstrumentListener {
         else this.initDefault();
     }
 
+    /**
+     * Completely stop listening and reset counter to 0
+     */
     stopListener() {
         this.pitchCounter.stop();
         this.pitchCounter.counter = 0;
     }
 
+    /**
+     * Pause listening and pause counter. (Does not reset counter.)
+     */
     changeListenerState() {
         this.pitchCounter.changeState();
         return this.get_pitch_count();
     }
 
+    /**
+     * Creates the requirement to consider a peak when analyzing the
+     * frequencies. Frequencies above the peak will be considered when
+     * counting notes.
+     *
+     * @param {yInt} number y intercept of the requirement
+     * @param {slope} number slope of the requirement
+     * @return {function} a peakRequirement function that maps an x coordinate
+     *                    (which is a frequency bin) to the requirement for
+     *                    that frequency to be considered part of a note.
+     */
     createPeakRequirement(yInt, slope) {
         return function(x) {
             return slope * x + yInt;
         }
     }
 
+    /**
+     * Initialize the piano listener.
+     */
     initPiano() {
         this.pitchCounter.minSNR = .5;
         this.pitchCounter.rememberedFrames = 3;
@@ -53,6 +91,9 @@ class InstrumentListener {
         this.pitchCounter.noteBuffer = 5;
     }
 
+    /**
+     * Initialize the voice listener.
+     */
     initVoice() {
         this.pitchCounter.minSNR = .5;
         this.pitchCounter.rememberedFrames = 3;
@@ -66,7 +107,9 @@ class InstrumentListener {
         this.pitchCounter.framesOfQuiet = this.pitchCounter.silenceBuffer + 1;
     }
 
-    //working
+    /**
+     * Initialize the guitar listener.
+     */
     initGuitar() {
         this.pitchCounter.minSNR = .1;
         this.pitchCounter.rememberedFrames = 4;
@@ -81,6 +124,9 @@ class InstrumentListener {
         this.pitchCounter.noteBuffer = 10;
     }
 
+    /**
+     * Initialize the percussion listener.
+     */
     initPercussion() {
         this.pitchCounter.minSNR = .1;
         this.pitchCounter.rememberedFrames = 4;
@@ -94,7 +140,9 @@ class InstrumentListener {
         this.pitchCounter.framesOfQuiet = this.pitchCounter.silenceBuffer + 1;
     }
 
-    //working
+    /**
+     * Initialize the strings listener.
+     */
     initStrings() {
         this.pitchCounter.minSNR = .5;
         this.pitchCounter.rememberedFrames = 2;
@@ -109,6 +157,9 @@ class InstrumentListener {
         this.pitchCounter.noteBuffer = 15;
     }
 
+    /**
+     * Initialize the winds listener.
+     */
     initWinds() {
         this.pitchCounter.minSNR = .5;
         this.pitchCounter.rememberedFrames = 3;
@@ -122,6 +173,9 @@ class InstrumentListener {
         this.pitchCounter.framesOfQuiet = this.pitchCounter.silenceBuffer + 1;
     }
 
+    /**
+     * Initialize the brass listener.
+     */
     initBrass() {
         this.pitchCounter.minSNR = .5;
         this.pitchCounter.rememberedFrames = 3;
@@ -131,14 +185,16 @@ class InstrumentListener {
             this.createPeakRequirement(-55, -.1);
         this.pitchCounter.decibalConstant = 7;
         this.pitchCounter.bufferSize = 256;
-        this.pitchCounter.silenceBuffer = 4; // decrease?
+        this.pitchCounter.silenceBuffer = 10; // decrease?
         this.pitchCounter.framesOfQuiet = this.pitchCounter.silenceBuffer + 1;
     }
 
+    /**
+     * Initialize the deafualt listener, which is just the voice listener.
+     * The voice listener filters the most noise, so it is useful as a default.
+     */
     initDefault() {
         this.initVoice();
     }
 }
-//
-// const instrumentListener = new InstrumentListener("default");
-// module.exports = instrumentListener;
+export const instrumentListener = new InstrumentListener("default");
