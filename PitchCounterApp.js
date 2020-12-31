@@ -49,8 +49,6 @@ class PitchCounterApp {
     }
 }
 
-export const app = new PitchCounterApp("voice");
-
 function Begin() {
     app.start();
 }
