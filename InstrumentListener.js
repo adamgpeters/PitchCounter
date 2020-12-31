@@ -1,4 +1,4 @@
-const PitchCounter = require('./PitchCounter.js').pitchCounter;
+import PitchCounter from './PitchCounter.js'
 
 /**
  * Summary. Listens to an instrument's audio coming from a user's microphone and
@@ -197,4 +197,3 @@ class InstrumentListener {
         this.initVoice();
     }
 }
-export const instrumentListener = new InstrumentListener("default");
