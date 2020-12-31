@@ -379,10 +379,3 @@
 
     return findPeaks;
   };
-
-  var version = "0.0.1";
-
-  exports.version = version;
-  exports.ricker = ricker;
-  exports.convolve = convolve;
-  exports.findPeaks = findPeaks;
