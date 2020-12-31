@@ -1,5 +1,3 @@
-const d3_peaks = require('./d3-peaks.js');
-
 /**
  * Summary. Listens to audio coming from a user's microphone and
  *          records the number of pitches they play or sing.
@@ -447,5 +445,3 @@ class PitchCounter {
         this.frequencyBars.updateFrequencyBars(this.frequencyData);
         }
 }
-
-export const pitchCounter = new PitchCounter();
