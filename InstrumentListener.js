@@ -1,5 +1,3 @@
-import PitchCounter from './PitchCounter.js'
-
 /**
  * Summary. Listens to an instrument's audio coming from a user's microphone and
  *          records the number of pitches they play or sing. Contains a
