@@ -48,7 +48,7 @@ class PitchCounterApp {
     }
 }
 
-const app = new PitchCounterApp("piano");
+app = new PitchCounterApp("piano");
 
 function Begin() {
     app.start();
