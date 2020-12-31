@@ -13,11 +13,6 @@ const FrequencyBars = function() {
 
 var x = 3;
 
-function newNote() {
-    // x = (x + 1) % 3;
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-}
-
 var timer;
 
 FrequencyBars.prototype.updateFrequencyBars = function(data) {
@@ -25,19 +20,11 @@ FrequencyBars.prototype.updateFrequencyBars = function(data) {
     this.canvas.setAttribute("height", (window.innerHeight / 2));
     this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height)
     cancelAnimationFrame(timer);
-    if (x == 0)
-        this.update4(data);
-    if (x == 1)
-        this.update3(data);
-    if (x == 2)
-        this.update2(data);
-    if (x == 3)
-        this.update1(data);
-
+    this.update1(data);
 }
 
 FrequencyBars.prototype.update1 = function(data) {
-    const length = 125 // low frequency only
+    const length = 125
     var width = this.canvas.width / length;
     var buffer = width / 1.5;
     width -= buffer;
@@ -61,7 +48,7 @@ FrequencyBars.prototype.update1 = function(data) {
 }
 
 FrequencyBars.prototype.update2 = function(data) {
-    const length = 50 // low frequency only
+    const length = 50
     var width = this.canvas.width / length;
     var buffer = width / 2;
     width -= buffer;
@@ -85,7 +72,7 @@ FrequencyBars.prototype.update2 = function(data) {
 }
 
 FrequencyBars.prototype.update3 = function(data) {
-    const length = 75 // low frequency only
+    const length = 75
     var width = this.canvas.width / length;
     var buffer = width / 2;
     width -= buffer;
@@ -109,7 +96,7 @@ FrequencyBars.prototype.update3 = function(data) {
 }
 
 FrequencyBars.prototype.update4 = function(data) {
-    const length = 100 // low frequency only
+    const length = 100
     var width = this.canvas.width / length;
     var buffer = width / 2;
     width -= buffer;
@@ -134,7 +121,7 @@ FrequencyBars.prototype.update4 = function(data) {
 
   FrequencyBars.prototype.updateTime = function(data) {
       this.canvasContext.fillStyle = '#d9d9d9'
-    const length = 200 // low frequency only
+    const length = 200
     const width = this.canvas.width / length - 3;
     for (var i = 0; i < length; i += 1) {
           this.canvasContext.fillRect(
@@ -146,6 +133,3 @@ FrequencyBars.prototype.update4 = function(data) {
       }
       timer = requestAnimationFrame(this.updateTime.bind(this));
 }
-//
-// const frequencyBars = new FrequencyBars();
-// module.exports = frequencyBars;
