@@ -10,8 +10,7 @@
 class PitchCounterApp {
 
     constructor(instr) {
-        this.instrument = require('./InstrumentListener.js').instrumentListener;
-        this.instrument.changeInstrument(instr);
+        this.instrument = new InstrumentListener(instr);
         this.get_pitch_count = function () {
             return this.instrument.get_pitch_count();
         };
